@@ -218,8 +218,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "应用实例",
-      "href": "https://www.codewithgpu.com/app/deploy"
+      "label": "官网",
+      "href": "https://www.autodl.art/"
     }
   }
 }
