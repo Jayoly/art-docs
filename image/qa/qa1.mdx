@@ -1,80 +1,53 @@
 ---
 title: "常见问题"
-description: "欢迎使用AutoDL.art"
+description: "AI 镜像的分享、选择、运行与计费问题"
 icon: 'circle-question'
 ---
 
-<Danger>严禁使用WebUI等算法生成违禁图片、严禁挖矿，一经发现立即封号！</Danger>
+<Danger>严禁使用 WebUI 等算法生成违禁图片、严禁挖矿，一经发现立即封号！</Danger>
 
-**AutoDL.art** 和 **AutoDL.com** 同属于视拓云研发和运营的产品，两者账户通用，可以互相登录使用。
-现在注册即送炼丹会员（有效期1个月），认证学生直接升级炼丹会员， 了解会员及认证🎉
+## 镜像与分享
 
+### 什么是 AI 镜像？
 
-AutoDL.art 主要由 **AI 应用**和 **AI 镜像**两部分组成。
+AI 镜像是预先打包的软件运行环境。用户可以在 AutoDL.com 上制作并公开分享镜像，其他用户可以选择公开镜像，在 AutoDL 机器上创建实例。更多说明请查看[镜像简介](/image/start/index)。
 
-**AI 镜像**本身就是docker镜像，是以 GitHub 为基础，在 GitHub 托管的代码下游，提供额外的镜像环境、算法模型等，解决以往构建环境难、管理与分享模型难的问题，为算法开发者、研究者等提供开箱即用的内容体验。详见[镜像]部分。//todo
+### 如何使用其他用户分享的镜像？
 
-**AI 应用**是在镜像基础上，增加了开机自启动等功能。可实现 AIGC 应用的开机即用，让 AIGC 创作更简单、更高效。
+在 AutoDL.art 的公开镜像里找到需要的镜像，查看制作者提供的使用说明和硬件要求，再选择兼容的机器创建实例。完整流程请查看[镜像使用](/image/start/quickstart)。
 
-## 功能亮点
+### 如何把自己制作的镜像分享给其他用户？
 
-· 即开即用：一键启动，开机即享预配置环境与服务。
+详见[发布镜像](/author/image)
 
-· 告别繁琐：无需关心启动流程、模型下载与环境配置。
+## 实例运行
 
-· 热门应用首发：ComfyUI、Wan2.2 视频生成、AI-Toolkit、Index TTS 等热门 AIGC 应用现已上线。
+### 镜像里一定包含完整项目和模型文件吗？
 
+不一定。镜像具体包含哪些代码、依赖、模型文件和启动配置由制作者决定；较大的模型文件也可能需要在实例启动后单独挂载或下载。创建实例前请先阅读镜像说明，避免把“已包含运行环境”理解为“所有资源都已预装”。
 
-## 容器实例和应用实例的区别
+### 在实例中修改内容会更新原来的公开镜像吗？
 
-## 必看文档
+不会自动更新。实例中的修改不会自动发布为原镜像的新版本。
 
-Get your documentation site up and running in minutes.
+### 镜像创建的实例启动失败，或 GPU 不可用，怎么办？
 
-<Card title="Start here" icon="rocket" horizontal href="/quickstart">
-  Follow our three step quickstart guide.
-</Card>
+先对照镜像说明检查所选机器的 GPU 型号、显存及 CUDA 等要求，再查看实例日志和项目启动命令。请按制作者文档手动启动服务；如果服务已启动但无法访问，还要检查项目所需的端口和访问方式。
 
-## Make it yours
+### 实例创建成功，但项目没有启动
 
-Design a docs site that looks great and empowers your users.
+镜像提供运行环境但不会自动启动。查看镜像作者的启动说明，手动执行对应命令，并检查实例日志中的错误信息。
 
-<Columns cols={2}>
-  <Card title="Edit locally" icon="pen-to-square" href="/development">
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card title="Customize your site" icon="palette" href="/essentials/settings">
-    Customize the design and colors of your site to match your brand.
-  </Card>
-  <Card title="Set up navigation" icon="map" href="/essentials/navigation">
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card title="API documentation" icon="terminal" href="/api-reference/introduction">
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+### 项目已启动，但无法访问服务
 
-## Create beautiful pages
+确认服务进程仍在运行，并按照项目和平台说明检查服务监听端口及访问方式。不同镜像的启动命令和端口配置可能不同，请以镜像作者提供的文档为准。
 
-Everything you need to create world-class documentation.
+### GitHub 项目更新后，镜像会自动更新吗？
 
-<Columns cols={2}>
-  <Card title="Write with MDX" icon="pen-fancy" href="/essentials/markdown">
-    Use MDX to style your docs pages.
-  </Card>
-  <Card title="Code samples" icon="code" href="/essentials/code">
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card title="Images" icon="image" href="/essentials/images">
-    Display images and other media.
-  </Card>
-  <Card title="Reusable snippets" icon="recycle" href="/essentials/reusable-snippets">
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+不会因为上游项目更新就自动同步。镜像制作者需要重新构建并发布新版本；使用前请查看镜像的版本、更新时间和更新说明。
 
-## Need inspiration?
+## 计费
 
-<Card title="See complete examples" icon="stars" href="https://mintlify.com/customers">
-  Browse our showcase of exceptional documentation sites.
-</Card>
+### 使用公开镜像是否免费？
+
+使用镜像不会额外收费，但是租用实例需要收费。

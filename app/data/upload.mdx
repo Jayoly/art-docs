@@ -31,7 +31,7 @@ icon: 'upload'
 
 复制您的ssh登录指令，指令格式为：`ssh -p 26095 root@connect.westd.seetacloud.com`   （注意26095为端口号，connect.westd.seetacloud.com为远程地址，请更换为您的实例端口和地址）
 
-> ⚠️下面命令中参数是<strong>`-rP`</strong>，不是`-rp`
+<Warning>⚠️下面命令中参数是<strong>`-rP`</strong>，不是`-rp`</Warning>
 
 那么scp远程拷贝文件的指令为：`scp -rP 26095 <本地文件/文件夹>  root@connect.westd.seetacloud.com:/root/autodl-tmp`  （注意需要在您**本地**的机器上执行）
 

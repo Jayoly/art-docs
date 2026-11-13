@@ -1,0 +1,37 @@
+---
+title: "工具问题"
+description: "Claude Code、Codex、Cursor 等客户端配置问题排查"
+icon: 'toolbox'
+---
+
+## 客户端配置
+
+### 客户端提示认证失败
+
+确认客户端填写的是 AutoDL「[令牌管理](https://www.autodl.art/large-model/tokens)」中的 Token，并检查 API 地址和接口协议是否与工具配置一致。OpenAI 兼容工具通常使用 `https://www.autodl.art/api/v1`；Claude Code 等 Anthropic 兼容工具请按照专属教程配置 Anthropic 地址和认证变量。
+
+查看对应工具的配置步骤：[Claude Code](/model/tool/claude)、[Codex](/model/tool/codex)、[Cursor](/model/tool/cursor)、[Trae](/model/tool/trae)、[Cherry Studio](/model/tool/cherry)和[CC Switch](/model/tool/ccswitch)。
+
+### 模型列表为空，或找不到要使用的模型
+
+部分客户端不会自动读取服务端模型列表，需要手动添加模型。请从[模型广场](https://www.autodl.art/large-model/market)复制完整名称，确保模型名称与客户端所选的接口协议匹配。
+
+### 修改配置后仍在调用旧模型
+
+确认配置已保存并启用，且当前对话或项目中选择了新模型。某些客户端会在启动时读取环境变量或配置文件；修改后请完全退出并重新打开客户端或终端，再创建新会话进行测试。
+
+### 工具可以连接，但不支持某项功能
+
+客户端能够调用模型，不代表模型一定支持该客户端的全部能力。工具调用、图像输入、长上下文等功能取决于模型和客户端双方的支持情况。请先确认模型页面列出的能力，并使用客户端支持的模型与接口模式。
+
+### 环境变量配置了，但客户端没有读取
+
+环境变量通常只对新启动的进程生效。检查变量是否设置在启动客户端的同一用户和终端环境中；如果使用图形界面应用，也可以按照该工具教程在应用设置中配置。改完后重新启动应用，并检查变量名和 API 地址是否拼写正确。
+
+### 是否应该填写 `Bearer ` 前缀
+
+在客户端的 API Key 输入框中通常只填写 Token 本身，不要添加 `Bearer `。如果是自己编写 HTTP 请求，则按照接口要求在请求头中设置认证信息；可参考[快速开始](/model/start/quickstart)中的请求示例。
+
+## Token 安全
+
+不要将 Token 写入公开代码仓库、截图或日志，也不要与他人共享。如果怀疑 Token 已泄露，请在「[令牌管理](https://www.autodl.art/large-model/tokens)」中撤销并重新创建。

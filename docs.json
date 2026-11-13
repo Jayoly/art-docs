@@ -39,12 +39,6 @@
               "guide/account/member",
               "guide/account/student"
             ]
-          },
-          {
-            "group": "故障与维护",
-            "pages": [
-              "guide/maintenance/base"
-            ]
           }
         ]
       },
@@ -99,7 +93,15 @@
           {
             "group": "常见问题",
             "pages": [
-              "app/qa/qa1"
+              "app/qa/qa1",
+              "app/qa/qa2",
+              "app/qa/qa3"
+            ]
+          },
+          {
+            "group": "故障与维护",
+            "pages": [
+              "app/maintenance/base"
             ]
           }
         ]
@@ -117,12 +119,14 @@
           {
             "group": "API调用示例",
             "pages": [
+
               "model/model/deepseek",
               "model/model/glm",
               "model/model/qwen",
               "model/model/minimax",
               "model/model/kimi",
               "model/model/hy",
+              "model/model/wan",
               "model/model/doubao",
               "model/model/hailuo",
               "model/model/vidu",
@@ -159,7 +163,41 @@
           {
             "group": "常见问题",
             "pages": [
-              "model/qa/qa1"
+              "model/qa/qa1",
+              "model/qa/qa2",
+              "model/qa/qa3",
+              "model/qa/qa4"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "ComfyUI API 指南",
+        "groups": [
+          {
+            "group": "开始使用",
+            "pages": [
+              "comfyui/start/index",
+              "comfyui/start/quickstart"
+            ]
+          },
+          {
+            "group": "API 调用",
+            "pages": [
+              "comfyui/api/api",
+              "comfyui/api/log"
+            ]
+          },
+          {
+            "group": "计费",
+            "pages": [
+              "comfyui/expense/price"
+            ]
+          },
+          {
+            "group": "常见问题",
+            "pages": [
+              "comfyui/qa/qa1"
             ]
           }
         ]
@@ -191,9 +229,8 @@
       {
         "tab": "作者专区",
         "pages": [
-          "author/app",
           "author/image",
-          "author/model",
+          "author/app",
           "author/reward"
         ]
       },

@@ -1,0 +1,71 @@
+---
+title: '万相'
+description: '万相视频生成 API 调用示例'
+icon: 'video'
+---
+
+## 调用说明
+
+- `API_KEY`请前往「大模型」->「[令牌管理](https://www.autodl.art/large-model/tokens)」页面获取
+
+- `model`请前往「[大模型](https://www.autodl.art/large-model/market)」页面复制model名称
+
+- 端点：https://www.autodl.art/api/v1/ali/api/v1/services/aigc/video-generation/video-synthesis
+
+
+<Note>以下调用以模型`wan3.0-video`为例，请将示例中的 `YOUR_API_KEY` 替换为实际的 AutoDL 密钥</Note>
+
+详见[万相官方文档](https://docs.bailian.console.aliyun.com/zh/model-studio/wan3-video-generation-api-reference)
+
+## cURL 调用
+
+```bash
+curl --location 'https://www.autodl.art/api/v1/ali/api/v1/services/aigc/video-generation/video-synthesis' \
+    -H 'X-DashScope-Async: enable' \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H 'Content-Type: application/json' \
+    -d '{
+    "model": "wan3.0-video",
+    "input": {
+        "prompt": "一只小猫在月光下的屋顶上奔跑，城市的霓虹灯在远处闪烁，电影级画质，流畅运镜。"
+    },
+    "parameters": {
+        "resolution": "480P",
+        "ratio": "adaptive",
+        "duration": 5,
+        "prompt_extend": true
+    }
+}'
+```
+
+## Python 调用
+
+```python
+import requests
+
+url = "https://www.autodl.art/api/v1/ali/api/v1/services/aigc/video-generation/video-synthesis"
+
+headers = {
+    "X-DashScope-Async": "enable",
+    "Authorization": f"Bearer {YOUR_API_KEY}",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "model": "wan3.0-video",
+    "input": {
+        "prompt": "一只小猫在月光下的屋顶上奔跑，城市的霓虹灯在远处闪烁，电影级画质，流畅运镜。",
+    },
+    "parameters": {
+        "resolution": "480P",
+        "ratio": "adaptive",
+        "duration": 5,
+        "prompt_extend": True,
+    },
+}
+
+response = requests.post(url, headers=headers, json=payload, timeout=60)
+
+print("Status:", response.status_code)
+print("Response:", response.text)
+```

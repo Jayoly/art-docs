@@ -1,0 +1,33 @@
+---
+title: "Agent 问题"
+description: "OpenClaw、Hermes 等 Agent 配置与运行问题排查"
+icon: 'robot'
+---
+
+## Agent 配置与运行
+
+### Agent 启动后提示认证失败
+
+检查 Agent 的服务商类型、Base URL 和 API Key 是否配置正确。OpenAI 兼容配置通常使用 `https://www.autodl.art/api/v1`，API Key 填写 AutoDL Token 本身；如果 Agent 使用 Anthropic 协议，请按其配置要求使用对应端点和认证字段。
+
+可参考[OpenClaw 配置](/model/agent/openclaw)或[Hermes 配置](/model/agent/hermes)。
+
+### Agent 找不到模型
+
+在 AutoDL「[模型广场](https://www.autodl.art/large-model/market)」复制完整模型名称，并确认它已填写到 Agent 当前启用的服务商配置中。检查默认模型设置是否指向该模型；修改后重新启动 Agent 或重新加载配置。
+
+### Agent 只回答问题，没有执行工具或任务
+
+Agent 是否执行工具还取决于 Agent 本身的工具、技能和权限配置，以及当前模型是否支持所需的工具调用能力。检查 Agent 的工具是否已启用、任务是否获准执行，并确认所选模型支持相关能力。可先用简单任务验证模型连接，再逐项检查 Agent 工具配置。
+
+### Agent 反复调用工具或任务中途停止
+
+检查 Agent 的运行日志和停止原因，并确认任务没有超出模型的上下文或输出限制。将复杂任务拆分为较小步骤，缩短对话历史后重试；如果问题只发生在某个工具上，检查该工具自身的配置与权限。
+
+### 修改配置后没有生效
+
+确认修改的是 Agent 实际使用的配置文件，而不是示例文件或其他用户目录下的文件。检查 YAML、JSON 或环境变量格式，并按照对应教程重启 Agent。若使用环境变量保存 Token，确认启动 Agent 的进程能够读取该变量。
+
+### 如何保护 Agent 使用的 Token
+
+将 Token 保存在本地环境变量或受保护的配置文件中，不要提交到代码仓库或粘贴到公开日志。若 Token 已泄露，请及时在「[令牌管理](https://www.autodl.art/large-model/tokens)」中撤销并更换。

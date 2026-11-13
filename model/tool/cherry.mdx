@@ -1,31 +1,80 @@
 ---
 title: 'Cherry Studio'
-description: '系统盘的扩容与缩容'
+description: '使用 AutoDL 第三方 Token 配置 Cherry Studio'
 icon: 'toolbox'
 ---
 
+Cherry Studio 是一款支持多种大模型服务的桌面客户端。通过配置 AutoDL 的第三方 Token，你可以在 Cherry Studio 中调用 AutoDL 提供的大模型 API。
+
+## 前置准备
+
+1. 安装并打开 [Cherry Studio](https://cherry-ai.com/)。
+2. 前往「大模型」->「[令牌管理](https://www.autodl.art/large-model/tokens)」创建并复制 `API_KEY`。
+3. 前往「[大模型](https://www.autodl.art/large-model/market)」页面复制要使用的模型名称。
+
 <Note>
-实例系统盘无论实例是否开机运行均会在每日产生费用，扩容盘也会按每天最高扩容容量计费，详见[计费规则](/app/expense/price)。
+下方配置中的 `<你的API_KEY>` 和 `<模型名称>` 需要替换为 AutoDL 页面中的实际值。
 </Note>
 
-扩容缩容均需要在关机状态下进行。
+## 配置 Claude 系列模型
 
-## 扩容
+### Step 1：新增AutoDL供应商
 
-点击「扩缩容」，然后在弹窗里设置扩容容量。
-![image_2026-04-14_171335_076](/images/data/image_2026-04-14_171335_076.png)
-![image_2026-04-14_171429_342](/images/data/image_2026-04-14_171429_342.png)
+打开 Cherry Studio，进入「设置」->「模型服务」，点击「添加」或选择 Anthropic 服务商。
 
-## 缩容
+![2026-03-18-17-47-49-image](/images/large-model/tool/2026-03-18-17-47-49-image.png)
 
-点击「扩缩容」，然后在弹窗里设置缩容容量。
+### Step 2：配置AutoDL供应商的参数
 
-<Danger>
-缩容有一定风险造成文件系统损坏和数据丢失，请谨慎缩容；强烈建议改用克隆实例，然后在新实例中选择合适磁盘容量的方式来间接完成缩容。比如：
+这里要填写的Anthropic协议的API地址为：https://www.autodl.art/api/v1/anthropic/v1
 
-实例扩容70G后共计100G，目前只使用60G，想要缩容40G。推荐做法：克隆一个新实例，新实例只扩容30G，克隆完成检查数据无误后释放源实例。
-</Danger>
+![2026-03-18-17-49-59-image](/images/large-model/tool/2026-03-18-17-49-59-image.png)
+
+## 配置国产模型
+
+这里国产语言模型主要指兼容OpenAI Chat Complete接口的模型，包含：智谱系列，DeepSeek系列，MiniMax系列，Kimi系列等
 
 
-![image_2026-04-14_171450_788](/images/data/image_2026-04-14_171450_788.png)
+### Step 1：新增AutoDL供应商
+由于多数国产大模型都使用了兼容OpenAI的协议，因此在创建供应商时请选择模型提供商类型为：OpenAI
 
+![2026-03-18-18-00-28-image](/images/large-model/tool/2026-03-18-18-00-28-image.png)
+
+### Step 2：配置AutoDL供应商的参数
+
+API地址请填写：https://www.autodl.art/api/v1
+添加模型，比如：GLM-5，您也可以一次性添加多个模型，使用时切换选择即可
+
+![2026-03-18-18-01-46-image](/images/large-model/tool/2026-03-18-18-01-46-image.png)
+
+## 配置OpenAI系列模型
+
+建议在使用OpenAI系列模型时，使用OpenAI最新的Reponses形式的协议，适应多模态模型，完整API地址为:https://www.autodl.art/api/v1/responses，
+gpt-5.4，gpt-5.5，gpt-image-2均兼容此接口
+
+### Step 1：新增AutoDL供应商
+选择提供商类型：OpenAI-Response
+
+![2026-04-29-11-03-11-image](/images/large-model/tool/2026-04-29-11-03-11-image.png)
+
+### Step 2：配置AutoDL供应商的参数
+
+API地址请填写：https://www.autodl.art/api/v1，
+添加模型，比如：gpt-5.5
+
+![2026-04-29-10-59-30-image](/images/large-model/tool/2026-04-29-10-59-30-image.png)
+
+## 配置Gemini系列模型
+
+### Step 1：新增AutoDL供应商
+
+选择提供商类型：Gemini
+
+![2026-04-29-11-03-59-image](/images/large-model/tool/2026-04-29-11-03-59-image.png)
+
+### Step 2：配置AutoDL供应商的参数
+
+API地址请填写：https://www.autodl.art/api/v1/gemini/v1beta，
+添加模型，比如：gemini-3.1-pro-preview
+
+![2026-04-29-11-04-56-image](/images/large-model/tool/2026-04-29-11-04-56-image.png)

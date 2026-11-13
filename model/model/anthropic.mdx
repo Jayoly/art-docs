@@ -1,6 +1,6 @@
 ---
 title: 'Anthropic'
-description: 'Anthropic调用示例'
+description: 'Anthropic 模型调用示例'
 icon: 'comment-nodes'
 ---
 
@@ -12,19 +12,51 @@ icon: 'comment-nodes'
 
 - OpenAI 请求端点：https://www.autodl.art/api/v1/
 
-<Note>以下调用以xxxxx模型为例</Note> // todo替换xxxxx
+  Anthropic请求端点：https://www.autodl.art/api/v1/anthropic
 
-### curl调用 // todo
+<Note>以下调用以模型`claude-opus-5-5`、anthropic请求端点为例，请将示例中的 `YOUR_API_KEY` 替换为实际的 AutoDL 密钥</Note>
 
-```Shell
+## cURL 调用
 
-
+```bash
+curl --location 'https://www.autodl.art/api/v1/anthropic/v1/messages' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --header 'anthropic-version: 2023-06-01' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "model": "claude-opus-5-5",
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "role": "user",
+        "content": "您好！"
+      }
+    ]
+  }'
 ```
 
-### Python调用 // todo
+## Python 调用
 
-```Python
+```python
+from anthropic import Anthropic
 
-
+# 初始化客户端
+client = Anthropic(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.autodl.art/api/v1/anthropic"
+)
+# 调用接口
+message = client.messages.create(
+    model="claude-opus-5-5",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "您好！"}
+    ]
+)
+# 打印结果
+print(message.content[0].text)
 ```
 
+<Tip>
+如果本地尚未安装 anthropic Python SDK，请先运行 `pip install anthropic`。
+</Tip>

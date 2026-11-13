@@ -1,6 +1,6 @@
 ---
 title: 'Qwen'
-description: 'Qwen调用示例'
+description: 'Qwen 对话与图像生成 API 调用示例'
 icon: 'comment-nodes'
 ---
 
@@ -10,20 +10,103 @@ icon: 'comment-nodes'
 
 - `model`请前往「[大模型](https://www.autodl.art/large-model/market)」页面复制model名称
 
-- OpenAI 请求端点：https://www.autodl.art/api/v1/
 
-<Note>以下调用以xxxxx模型为例</Note> // todo替换xxxxx
-
-### curl调用 // todo
-
-```Shell
+<Note>以下对话示例使用 `qwen3.7-max`，图像生成示例使用 `Qwen-Image`，请将示例中的 YOUR_API_KEY 替换为实际的 AutoDL 密钥</Note>
 
 
+## 对话调用
+
+OpenAI 请求端点：https://www.autodl.art/api/v1/
+
+### cURL 调用
+
+```bash
+curl --location -g --request POST "https://www.autodl.art/api/v1/chat/completions" \
+--header "Authorization: Bearer YOUR_API_KEY" \
+--header "Content-Type: application/json" \
+--data-raw '{
+    "messages": [
+        {
+            "role": "user",
+            "content": "您好！"
+        }
+    ],
+    "model":"qwen3.7-max",
+    "stream":true
+}'
 ```
 
-### Python调用 // todo
+### Python 调用
 
-```Python
+```python
+from openai import OpenAI
 
+# 初始化客户端
+client = OpenAI(
+    base_url="https://www.autodl.art/api/v1",
+    api_key="YOUR_API_KEY",
+)
 
+# 调用接口（这里使用了stream=True进行流式响应）
+stream = client.chat.completions.create(
+    model="qwen3.7-max",
+    messages=[
+        {
+            "role": "user",
+            "content": "您好！"
+        }
+    ],
+    stream=True,
+)
+
+# 流式打印输出
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content)
+```
+
+## 图像生成
+
+模型广场当前提供 `Qwen-Image`、`Z-Image-Turbo` 等图像生成模型，使用详情页标注的 **OpenAI 生图**端点：
+`https://www.autodl.art/api/v1/images/generations`
+
+调用详见[阿里云官方文档](https://help.aliyun.com/zh/model-studio/qwen-image-api-reference/?spm=a2c4g.11186623.help-menu-2400256.d_3_2_0.6ac5740fDTlodo&scm=20140722.H_3040907._.OR_help-T_cn~zh-V_1)
+
+### cURL 调用
+
+```bash
+curl --location 'https://www.autodl.art/api/v1/images/generations' \
+--header "Authorization: Bearer YOUR_API_KEY" \
+--header 'Content-Type: application/json' \
+--data '{
+    "model": "Qwen-Image",
+    "prompt": "一只橘猫坐在窗边，柔和的午后阳光，写实摄影风格",
+    "size": "1024x1024",
+    "n": 1,
+    "prompt_extend": true
+}'
+```
+
+### Python 调用
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://www.autodl.art/api/v1/images/generations",
+    timeout=600.0,
+)
+
+response = client.images.generate(
+    model="Qwen-Image",
+    prompt="一只橘猫坐在窗边，柔和的午后阳光，写实摄影风格",
+    size="1024x1024",
+    n=1,
+    # 以上均为OpenAI官方参数。image、prompt_extend等扩展字段需通过extra_body传入，参见图生图示例
+)
+
+for item in response.data:
+    print(item.url)
+print(f"request_id: {response._request_id}")
 ```

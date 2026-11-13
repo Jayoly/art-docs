@@ -1,33 +1,121 @@
 ---
 title: 'Codex'
-description: '数据、模型整体介绍'
+description: 'Codex 配置 AutoDL 大模型接口'
 icon: 'toolbox'
 ---
+// todo检查是否需要终端交互配置
 
-<Warning>
-实例的系统盘为网络块存储，极小概率出现故障，重要的数据请定期备份到本地，AutoDL对于此类存储产品不提供可靠性承诺与服务。todo：复核文案
-</Warning>
+Codex 是 OpenAI 提供的命令行编程助手。通过配置 AutoDL 的第三方 Token，你可以在本地终端直接使用 Codex。
 
+## 前置准备
 
-## 实例中的数据保留规则
+1. 安装 Node.js 和 npm。
+2. 安装 Codex：
 
+```Shell
+npm install -g @openai/codex
+```
 
-实例在数据在，开关机以及包年包月到期均不影响数据。但是实例有释放周期，释放规则是**连续**关机60天释放实例，届时实例所有数据将被清空，释放后无法恢复。
+3. 前往「大模型」->「[令牌管理](https://www.autodl.art/large-model/tokens)」创建并复制 `API_KEY`。
 
+<Note>
+下方命令中的 `<你的API_KEY>` 需要替换为在 AutoDL 令牌管理页面获取的 Token。
+</Note>
 
+## CC Switch
 
-## 上传下载数据
+推荐使用 [CC Switch](/model/tool/ccswitch) 统一管理 Codex、Claude Code 等工具的环境变量。
 
-强烈推荐使用云盘进行数据传输，不受本地网络环境影响，传输稳定且快，参考[公网网盘](/app/data/netdisk)
+## Windows 配置
 
-其他上传下载方法：
+### 临时配置
 
-[上传数据](/app/data/upload)
+在 PowerShell 中执行以下命令，本次终端会话立即生效：
 
-[下载数据](/app/data/download)
+```PowerShell
+$env:OPENAI_BASE_URL="https://www.autodl.art/api/v1"
+$env:OPENAI_API_KEY="<你的API_KEY>"
+```
 
-## 系统盘计费
+### 永久配置
 
-对于按量计费实例，会以当天使用的最高容量（如果有缩容）在24点计费，无论该实例在当天是否关机，直到实例释放。价格以实际网站显示的价格为准。
+如果希望后续打开 PowerShell 时自动生效，可以执行：
 
-对于包年包月实例，租用时会按选择的数据盘大小计算需要支付的费用，你可以在租用页面最下方费用明细查看具体支付金额。包年包月实例到期后，会和按量计费实例一样的规则进行计费，无论是否关机，直到实例释放。
+```PowerShell
+setx OPENAI_BASE_URL "https://www.autodl.art/api/v1"
+setx OPENAI_API_KEY "<你的API_KEY>"
+```
+
+执行完成后，关闭当前终端并重新打开，再运行：
+
+```PowerShell
+codex
+```
+
+<Tip>
+Windows 用户也可以在 WSL 或 Git Bash 中按照 Linux 的方式配置。
+</Tip>
+
+## Linux 配置
+
+### 临时配置
+
+在终端中执行以下命令，本次终端会话立即生效：
+
+```Shell
+export OPENAI_BASE_URL="https://www.autodl.art/api/v1"
+export OPENAI_API_KEY="<你的API_KEY>"
+```
+
+### 永久配置
+
+如果使用 Bash，可以写入 `~/.bashrc`：
+
+```Shell
+echo 'export OPENAI_BASE_URL="https://www.autodl.art/api/v1"' >> ~/.bashrc
+echo 'export OPENAI_API_KEY="<你的API_KEY>"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+如果使用 Zsh，将 `~/.bashrc` 替换为 `~/.zshrc`。
+
+## macOS 配置
+
+### 临时配置
+
+在终端中执行以下命令，本次终端会话立即生效：
+
+```Shell
+export OPENAI_BASE_URL="https://www.autodl.art/api/v1"
+export OPENAI_API_KEY="<你的API_KEY>"
+```
+
+### 永久配置
+
+macOS 默认使用 Zsh，可以写入 `~/.zshrc`：
+
+```Shell
+echo 'export OPENAI_BASE_URL="https://www.autodl.art/api/v1"' >> ~/.zshrc
+echo 'export OPENAI_API_KEY="<你的API_KEY>"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+如果你使用 Bash，将 `~/.zshrc` 替换为 `~/.bash_profile` 或 `~/.bashrc`。
+
+## 启动 Codex
+
+完成配置后，在任意项目目录运行：
+
+```Shell
+codex
+```
+
+如果 Codex 正常启动，并且能够读取 AutoDL 的接口地址和令牌，说明配置成功。
+
+可以发送一句“您好”测试，并观察[数据看板](https://www.autodl.art/large-model/dashboard)消耗。
+
+## 更多资源
+
+高级配置：如果你需要调整模型参数、超时时间或日志设置，请参考官方文档：[Codex 高级配置指南](https://learn.chatgpt.com/docs/config-file/config-advanced)
+
+返回/取消：在输入 Key 的界面，可以按 Esc 键返回主菜单。

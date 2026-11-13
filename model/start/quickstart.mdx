@@ -1,34 +1,59 @@
 ---
 title: "快速开始"
-description: "几分钟即可完成创建"
+description: "几分钟调通API"
 icon: 'rocket'
 ---
 
-## 3步创建自己第一个应用实例
+## 3步调通大模型API
 
-<Note>AutoDL.art 应用中的数据（包括环境）在关机后将全部保存，开机后无需再次配置和上传数据。总而言之，实例在数据在，但是**连续关机60天**实例将被**释放**，释放前每天均匀**磁盘计费**。详见实例[数据保留规则](/app/data/data)。</Note>
+### Step 1: 创建令牌
 
-### Step 1: 选择应用
+在「大模型」-> 「令牌管理」里创建一个令牌。分组选择**特惠**
 
-在「应用广场」选择自己需要的应用。点击「应用封面」可以看到应用作者提供的使用教程。
+<Tip>建议设置消费额度和过期时间。</Tip>
 
-<Tip>强烈建议先阅读教程，按教程步骤进行操作。</Tip>
+![image_2026-07-31_154850_150](/images/large-model/start/image_2026-07-31_154850_150.png)
 
-![image_2025-11-24_173833_766](/images/start/image_2025-11-24_173833_766.png)
+### Step 2: 选择模型
 
-### Step 2: 选择机器
+在「大模型」-> 「模型广场」里选择使用的模型，获取API端点和模型名称。
 
-在右侧区域选择自己需要的机器配置，点击「立即创建」将自动创建应用并开机运行。
+<Tip>注意这里使用`DeepSeek-V4-Pro`的`OpenAI`端点进行演示。</Tip>
 
-<Tip>请留意作者给的提示。</Tip>
+![image_2026-07-31_154850_152](/images/large-model/start/image_2026-07-31_154850_152.png)
 
-![image_2025-11-24_174118_523](/images/start/image_2025-11-24_174118_523.png)
+### Step 3: 开始调用 
 
-### Step 3: 开始使用 
+使用下面python代码直接调用，或者使用工具调用，详见[客户端/开发工具]章节。
 
-部署完成后，按应用教程「访问应用服务」即可立即使用。
+```Python
+# 如果没有安装OpenAI Python SDK，可使用命令安装：pip install OpenAI
 
-<Tip>应用具体使用前建议先详细阅读应用教程。服务启动可能需要几秒钟，假如打开报错可以过几秒后重试。</Tip>
+from openai import OpenAI
 
-![image_2025-11-24_174155_359](/images/start/image_2025-11-24_174155_359.png)
+# 初始化客户端
+client = OpenAI(
+    base_url="https://www.autodl.art/api/v1",
+    api_key="YOUR_API_KEY",
+)
+
+# 调用接口（这里使用了stream=True进行流式响应）
+stream = client.chat.completions.create(
+    model="DeepSeek-V4-Pro",
+    messages=[
+        {
+            "role": "user",
+            "content": "您好！"
+        }
+    ],
+    stream=True,
+)
+
+# 流式打印输出
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content)
+```
+
+![image_2026-07-31_161922_259](/images/large-model/start/image_2026-07-31_161922_259.png)
 

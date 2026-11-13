@@ -1,73 +1,126 @@
 ---
 title: 'Claude Code'
-description: '实例中对数据进行压缩和解压'
+description: 'Claude Code 配置 AutoDL 大模型接口'
 icon: 'toolbox'
 ---
 
+Claude Code 是 Anthropic 官方推出的命令行编程工具。通过配置 AutoDL 的大模型 Token，可以让 Claude Code 调用 AutoDL 的大模型接口。
+
+## 前置准备
+
+1. 安装 Node.js 和 npm。
+2. 安装 Claude Code：
+
+```Shell
+npm install -g @anthropic-ai/claude-code
+```
+
+3. 前往「大模型」->「[令牌管理](https://www.autodl.art/large-model/tokens)」创建并复制 `密钥`。
+
+<Note>
+下方命令中的 `<你的API_KEY>` 需要替换为在 AutoDL 令牌管理页面获取的`密钥`。
+</Note>
+
+## CC Switch
+
+推荐使用[CC Switch](/model/tool/ccswitch)配置。
+
+## Windows 配置
+
+### 临时配置
+
+在 PowerShell 中执行以下命令，本次终端会话立即生效：
+
+```PowerShell
+$env:ANTHROPIC_BASE_URL="https://www.autodl.art/api/v1/anthropic"
+$env:ANTHROPIC_AUTH_TOKEN="<你的API_KEY>"
+```
+
+### 永久配置
+
+如果希望后续打开 PowerShell 时自动生效，可以执行：
+
+```PowerShell
+setx ANTHROPIC_BASE_URL "https://www.autodl.art/api/v1/anthropic"
+setx ANTHROPIC_AUTH_TOKEN "<你的API_KEY>"
+```
+
+执行完成后，关闭当前终端并重新打开，再运行：
+
+```PowerShell
+claude
+```
+
 <Tip>
-如无特殊需要，推荐使用`.tar`格式的包，因为该格式仅打包不会压缩，而多数情况图片和视频等都无法进一步压缩，因此仅打包不压缩是速度最快、消耗资源最少的打包和解压方式。
+Windows 用户也可以在 WSL 或 Git Bash 中按照 Linux 的方式配置。
 </Tip>
 
-由于安装的zip、rar包等都只能解压或压缩某一种压缩包，这里提供一个小工具，支持解压格式：`.tar`， `.zip`， `.rar`， `.7z`，支持压缩/打包格式：`.zip`，`.tar`
+## Linux 配置
 
-``` shell  lines icon="shell"
-# 下载安装工具
-curl -L -o /usr/bin/arc http://autodl-public.ks3-cn-beijing.ksyun.com/tool/arc && chmod +x /usr/bin/arc
+### 临时配置
 
-# 压缩/打包
-arc compress xxx.zip path/to/directory
+在终端中执行以下命令，本次终端会话立即生效：
 
-# 解压
-arc decompress xxx.zip 
-或者解压到指定目录
-arc decompress xxx.zip path/to/directory
+```Shell
+export ANTHROPIC_BASE_URL="https://www.autodl.art/api/v1/anthropic"
+export ANTHROPIC_AUTH_TOKEN="<你的API_KEY>"
 ```
 
-有个别zip的压缩包使用上边的命令以及`unzip`命令都不能解压时，先检查文件大小，如果文件大小和源文件一样，那么尝试下面的命令解压：
+### 永久配置
 
-```shell  lines icon="shell"
-apt-get update && apt-get install -y fastjar
-jar xvf xxx.zip
+如果使用 Bash，可以写入 `~/.bashrc`：
+
+```Shell
+echo 'export ANTHROPIC_BASE_URL="https://www.autodl.art/api/v1/anthropic"' >> ~/.bashrc
+echo 'export ANTHROPIC_AUTH_TOKEN="<你的API_KEY>"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-**如果以上小工具使用异常**，换用常用的压缩解压软件：
+如果使用 Zsh，将 `~/.bashrc` 替换为 `~/.zshrc`。
 
-1. 压缩zip和解压zip
+## macOS 配置
 
-   ```shell  lines icon="shell"
-   # 压缩。如果没有zip命令，安装命令：apt-get update && apt-get install -y zip
-   zip -r <自定义压缩包名称>.zip <待压缩目录的路径>
-   
-   # 解压。如果没有zip命令，安装命令：apt-get update && apt-get install -y unzip
-   unzip  <待解压压缩包名称>.zip -d <解压到哪个路径>
-   ```
+### 临时配置
 
-2. 压缩tar和解压tar
+在终端中执行以下命令，本次终端会话立即生效：
 
-   ```shell  lines icon="shell"
-   # 压缩（具体是指打包，未压缩，非常推荐这种方式，因为压缩/解压都耗时，但是图片等都无法再压缩）
-   tar -cf <自定义压缩包名称>.tar <待压缩目录的路径>
-   
-   # 解压
-   tar -xf <待解压压缩包名称>.tar -C <解压到哪个路径>
-   ```
+```Shell
+export ANTHROPIC_BASE_URL="https://www.autodl.art/api/v1/anthropic"
+export ANTHROPIC_AUTH_TOKEN="<你的API_KEY>"
+```
 
-3. 压缩tar.gz和解压tar.gz
+### 永久配置
 
-   ```shell  lines icon="shell"
-   # 压缩
-   tar -czf <自定义压缩包名称>.tar <待压缩目录的路径>
-   
-   # 解压
-   tar -xzf <待解压压缩包名称>.tar -C <解压到哪个路径>
-   ```
+macOS 默认使用 Zsh，可以写入 `~/.zshrc`：
 
-4. 解压rar
+```Shell
+echo 'export ANTHROPIC_BASE_URL="https://www.autodl.art/api/v1/anthropic"' >> ~/.zshrc
+echo 'export ANTHROPIC_AUTH_TOKEN="<你的API_KEY>"' >> ~/.zshrc
+source ~/.zshrc
+```
 
-   ```shell  lines icon="shell"
-   # 不推荐使用rar的包，linux下非常不常用
-   # 解压。如果没有zip命令，安装命令：apt-get update && apt-get install -y unrar
-   unrar e <待解压压缩包名称>.rar
-   ```
+如果你使用 Bash，将 `~/.zshrc` 替换为 `~/.bash_profile` 或 `~/.bashrc`。
 
-   
+## 可选：指定默认模型
+
+Claude Code 会读取 Anthropic 兼容环境变量。如果你希望固定使用 AutoDL 的 Claude Code 专用模型，可以额外设置默认模型变量，推荐使用 `claude-sonnet-4-6`：
+
+```Shell
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-sonnet-4-6"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-6"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-sonnet-4-6"
+```
+
+如果你想使用 `claude-opus-4-6`，把上面的三个值替换成该模型名称即可。
+
+## 验证配置
+
+完成配置后，在项目目录或任意工作目录运行：
+
+```Shell
+claude
+```
+
+如果 Claude Code 正常启动，并且不再提示登录 Anthropic 账号，说明 AutoDL 第三方 Token 已配置成功。
+
+可以发送一句“您好”测试，并观察[数据看板](https://www.autodl.art/large-model/dashboard)消耗。
