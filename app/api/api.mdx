@@ -1,57 +1,353 @@
 ---
-description: "应用实例、系统盘和镜像计费规则"
-title: "计费规则 // todo"
-icon: 'credit-card'
+description: "应用API调用"
+title: "应用API"
+icon: 'code'
 ---
 
-## 应用实例计费
+## 接口地址与鉴权
 
-AutoDL Art的应用实例支持按量计费和包年包月两种计费方式
+应用 API 服务端地址为 `https://www.autodl.art`。调用时将服务端地址与下方接口路径拼接为完整 URL。
 
-### 按量计费
+### 获取 Token
 
-<Warning>注意：系统盘单独计费，不包含在应用实例计费中，请参考下方系统盘的计费规则</Warning>
+登录 [AutoDL 控制台](https://www.autodl.com/console/center/settings/token)，依次进入 「账号」 → 「设置」 → 「[开发者 Token](https://www.autodl.com/console/center/settings/token) 」获取 Token。
 
-计费规则：
+在请求 Header 中通过 `Authorization` 传入 Token：
 
-1. 费用计算：应用实例开机开始计费，关机结束计费。费用= 时长x单价，时长=关机时间-开机时间，精确到秒，最低计费0.01元，单价以网页显示为准
-2. 扣费时机：整点扣费一次和关机时扣费一次，扣费金额为扣费周期内的费用，使用时长精确到秒。如10:00开机，11:30关机，那么会在11:00扣费1小时费用和在11:30扣费0.5小时费用
-3. 注意计费时长是以应用实例开关机时间为准，而不是以是否调用GPU计算时长为标准
+```http
+headers = {"Authorization": "填写您的token"}
+```
 
-### 包年包月
+<Danger>请妥善保管开发者 Token，不要将其提交到公开代码仓库或分享给他人。</Danger>
 
-计费规则：
+## 创建应用实例
 
-1. 包年包月为预付费，租用时一次性付清，具体价格以网页显示为准
-2. 支持按日、按周、按月等租用GPU
-3. 包年包月到期后，应用实例会关停（数据不受影响）
-4. 支持续费，续费周期支持按日、按周、按月 。也可以转按量计费，请见下方转换计费方式
+`POST /api/v1/adl_dev/dev/instance/pro/create`
 
-### 转换计费方式
+<Note>创建的实例默认采用按量计费方式，API 暂不支持选择其他计费方式。</Note>
 
-按量计费和包年包月支持互转。如果包年包月转按量计费则会退款，退款规则为：计算包年包月期间已消费的费用，单价根据已使用时长来确定，比如包了1月仅使用8天后转按量计费那么会以包周（使用超过7天）的价格来计算已消费金额，那么这里已消费金额即=周单价 x (8天/7天)，如果这里是使用3天后即转按量计费那么已消费金额=日单价 x (3天/1天)，然后在扣除已消费金额时优先使用已支付的代金券，未能完全抵扣的再使用已支付的余额部分，最后未消费的余额部分退款。注意如果代金券抵扣后还有剩余不再退还代金券。从退款规则看，**最经济**的使用方式是：包年包月，然后如果不再使用后转按量退款处理，这样会按照更经济的单价计费。
+### 请求参数
 
-## 系统盘计费
+| 参数 | 必填 | 说明 |
+| --- | --- | --- |
+| `data_center_list` | 否 | 地区列表。默认由系统自动选择；`westDC3` 表示西北区，`beijingDC2` 表示北京区。 |
+| `req_gpu_amount` | 是 | GPU 数量，范围为 1–4。 |
+| `expand_system_disk_by_gb` | 是 | 系统盘扩容大小，单位为 GB，范围为 0–500。 |
+| `gpu_spec_uuid` | 是 | 算力规格 ID，参见本文末尾的 GPU 算力规格 ID 对照表。 |
+| `application_uuid` | 是 | 应用 UUID，可在网页应用详情中查看。 |
+| `application_version` | 是 | 应用版本；填写 `latest` 时使用最新版本。 |
+| `instance_name` | 否 | 实例备注名。 |
+| `start_command` | 否 | 实例开机后执行的命令。命令执行失败不会影响实例开机，也不会导致实例关机。 |
 
-计费单价：请以网页显示的系统盘单价为准
+### 请求Body示例
 
-计费规则：
+```json
+{
+  "data_center_list": ["westDC3", "beijingDC2"],
+  "req_gpu_amount": 1,
+  "expand_system_disk_by_gb": 0,
+  "gpu_spec_uuid": "pro6000-p",
+  "application_uuid": "J1c7lsvbq5",
+  "application_version": "latest",
+  "instance_name": "API创建的实例",
+  "start_command": "sleep 1"
+}
+```
 
-1. 系统盘按日进行计费和结算。系统盘基础容量30GB，基础容量部分0.10元/日，系统盘支持扩容，扩容增加的费用以网页显示为准
-2. 如果应用实例是按量计费，系统盘会在次日凌晨结算当天的费用，每日结算一次，**无论实例是否开机**，均会计费，如不再需要使用，在实例的更多操作中点击**缩容系统盘**或者直接**释放实例** 
-3. 如果应用实例是包年包月，那么系统盘会计算在总费用中，租用时付清，实例到期后则会以按量计费实例一样的规则计费，即: 次日凌晨结算当天的费用，每日结算一次，**无论实例是否开机**
-4. 如果账户余额不足时会优先保留应用实例数据产生计费，不会立即释放您的实例，如果账号欠费超50元，平台将保留删除数据的权利（考虑到数据的重要性，会谨慎考虑删除用户数据），如由于平台在欠费50元后未能及时删除数据导致持续扣费，超出欠费50元的部分我们将为您使用无门槛代金券补欠额(例如：欠费60元，那么可联系客服补10元代金券；如欠费20元那么将由用户自行承担)
+### 返回Body示例
 
-<Note>如果扩容系统盘不再需要，可以在实例更多操作中点击缩容系统盘。然后当日的计费容量=当日最大的扩容容量，比如系统盘扩容为100GB，然后当天又缩容至10GB，那么当日以100GB计费。</Note>
+```json
+{
+  "code": "Success",
+  "data": "pro-76419909953e", //创建出的应用实例ID
+  "msg": "",
+  "request_id": "983edb8c8c8553db1115d51fb2758ae8"
+}
+```
 
-## 镜像计费
+## 获取应用实例详情
 
-可保存的镜像数量默认为20个，如需更多数量请联系客服。镜像计费以所有镜像存储总容量大小进行计费，与镜像数量无关。
+`GET /api/v1/adl_dev/dev/instance/pro/snapshot`
 
-计费单价：￥0.01/GB/日
+### 请求参数
 
-计费规则：
+| 参数 | 必填 | 说明 |
+| --- | --- | --- |
+| `instance_uuid` | 是 | 应用实例 ID。 |
 
-系统将以当日(自然日)使用的 (最大容量-免费容量) 为计费容量。30GB以下免费，超出免费30GB容量的费用(元/日)= 超出容量(GB) × 0.01元/GB/日，扣费时间为次日凌晨扣除当日费用。如有超出免费容量，最低费用0.01元
-如果账户余额不足时会优先保留数据产生计费，不会立即删除您的数据，但如果账号连续3个月未登录或欠费超50元，平台将保留删除数据的权利（考虑到数据的重要性，会谨慎考虑删除用户数据），如由于平台在欠费50元后未能及时删除数据导致持续扣费，超出欠费50元的部分我们将为您使用无门槛代金券补欠额(例如：欠费60元，那么可联系客服补10元代金券；如欠费20元那么将由用户自行承担)
-举例：如果当日使用最大量为50GB，那么当日产生的费用 = (50 - 30) × 0.01 = 0.2元
+### 请求Body示例
+
+```json
+{
+  "instance_uuid": "pro-76576c61fdf1"
+}
+```
+
+### 返回Body示例
+
+```json
+{
+  "code": "Success",
+  "data": {
+    "region_sign": "bj-B1",
+    "payg_price": 1970, // 折扣后的按量计费价格
+    "origin_pay_price": 3030,  // 折扣前的按量计费价格
+    "snapshot_gpu_alias_name": "NVIDIA RTX PRO 6000",
+    "chip_corp": "nvidia",
+    "cpu_arch": "x86",
+    "usage_info": {
+      "container_id": "autodl-pro-76576c61fdf1",
+      "valid_at": "2025-12-15T18:35:52.137127391+08:00",
+      "cpu_usage_percent": 3.34,
+      "mem_usage_percent": 1.26,
+      "mem_usage": 270528512,
+      "mem_limit": 21474836480,
+      "root_fs_used_size": 54435840,
+      "root_fs_total_size": 31526391808,
+      "data_disk_total_size": 0,
+      "data_disk_used_size": 0,
+      "storage_fs_usage": "",
+      "pull_image_progress": 1,
+      "download_image_progress": 1,
+      "download_oss_file_progress": 0,
+      "sys_fs_last_block_size": 0,
+      "is_new": false,
+      "valid": false
+    },
+    "expand_system_disk_size": 32212254720,
+    "system_init_disk_size": 32212254720,
+    "ssh_command": "ssh -p 34222 root@connect.xxx.autodl.com", 
+    "proxy_host": "connect.xxx.autodl.com", // ssh地址
+    "root_password": "<实例 SSH 密码>",  // ssh密码
+    "ssh_port": 34222, // ssh 端口
+    "jupyter_token": "<JupyterLab Token>", // jupyterlab token
+    "jupyter_domain": "a1-765793a1f226.xxx.autodl.com:8443",  // jupyterlab的访问地址
+    "service_6006_domain": "u1-h1tr7dnhvxyvm4uacvq9.xxx.autodl.com:8443",  // 6006端口服务对应的访问地址
+    "service_6006_port_protocol": "http",
+    "service_6008_domain": "uu1-yufv2v0fcxtvr5lv4j80.xxx.autodl.com:8443", // 6008端口服务对应的访问地址
+    "service_6008_port_protocol": "http",
+    "cg_application_info": {
+      "application_uuid": "vbxoJpZdGD",
+      "current_version": "v2",
+      "application_name": "ComfyUI-纯净版",
+      "logo": "https://codewithgpu-1310972338.cos.ap-beijing.myqcloud.com/1-225165862-7lVX68jiMJQw7QFyqH7f.png"
+    }
+  },
+  "msg": "",
+  "request_id": "b717410bb575336654fcc2ad79c72675"
+}
+```
+
+<Danger>返回结果中的 SSH 密码、JupyterLab Token 和访问地址属于实例敏感信息，请勿公开。</Danger>
+
+## 获取应用实例状态
+
+`GET /api/v1/adl_dev/dev/instance/pro/status`
+
+### 请求参数
+
+| 参数 | 必填 | 说明 |
+| --- | --- | --- |
+| `instance_uuid` | 是 | 应用实例 ID。 |
+
+### 请求Body示例
+
+```json
+{
+  "instance_uuid": "pro-76576c61fdf1"
+}
+```
+
+### 返回Body示例
+
+```json
+{
+  "code": "Success",
+  "data": "running",  // 实例状态
+  "msg": "",
+  "request_id": "2159c05b9b675c731c2334b88d6be8aa"
+}
+```
+
+
+## 获取应用实例列表
+
+`POST /api/v1/adl_dev/dev/instance/pro/list`
+
+### 请求参数
+
+| 参数 | 必填 | 说明 |
+| --- | --- | --- |
+| `page_index` | 否 | 页码。 |
+| `page_size` | 否 | 每页记录数。 |
+
+### 请求Body示例
+
+```json
+{
+  "page_index": 1,
+  "page_size": 1
+}
+```
+
+### 返回Body示例
+
+```json
+{
+  "code": "Success",
+  "data": {
+    "list": [
+      {
+        "created_at": "2025-12-15T17:30:54+08:00",
+        "uuid": "pro-76576c61fdf1",
+        "machine_id": "4d67438b4f",
+        "machine_alias": "",
+        "region_sign": "neimeng-C",
+        "region_name": "内蒙C区",
+        "status": "running",
+        "sub_status": "",
+        "status_at": "2025-12-15T17:31:05+08:00",
+        "start_mode": "gpu",  // 有卡模式：gpu
+        "charge_type": "payg", // 计费方式
+        "req_gpu_amount": 1, // GPU数量
+        "expired_at": {
+          "Time": "0001-01-01T00:00:00Z",
+          "Valid": false
+        },
+        "started_at": {
+          "Time": "2025-12-15T17:31:05+08:00",
+          "Valid": true
+        },
+        "stopped_at": {
+          "Time": "0001-01-01T00:00:00Z",
+          "Valid": false
+        },
+        "name": "zqAPI创建",
+        "timed_shutdown_at": {
+          "Time": "0001-01-01T00:00:00Z",
+          "Valid": false
+        },
+        "gpu_spec_uuid": "pro6000-p",  // 算力规格ID
+        "cg_application_info": {
+          "application_uuid": "vbxoJpZdGD",
+          "current_version": "v2",
+          "application_name": "ComfyUI-纯净版",
+          "logo": "https://codewithgpu-1310972338.cos.ap-beijing.myqcloud.com/1-225165862-7lVX68jiMJQw7QFyqH7f.png"
+        }
+      }
+    ],
+    "page_index": 1, // 第几页
+    "page_size": 1,  // 每页记录数量
+    "offset": 0,
+    "max_page": 22, // 总页数
+    "result_total": 22,  // 总记录数
+    "page": 1
+  },
+  "msg": "",
+  "request_id": "c53a6dc29de7c65ff2798dac12d8fe78"
+}
+```
+
+## 开机应用实例
+
+`POST /api/v1/adl_dev/dev/instance/pro/power_on`
+
+### 请求参数
+
+| 参数 | 必填 | 说明 |
+| --- | --- | --- |
+| `instance_uuid` | 是 | 应用实例 ID。 |
+| `payload` | 是 | 开机模式，填写 `gpu` 表示有卡开机；API 暂不支持无卡开机。 |
+| `start_command` | 否 | 实例开机后执行的命令。命令执行失败不影响实例开机；此参数会覆盖创建实例时设置的命令。 |
+
+### 请求Body示例
+
+```json
+{
+  "instance_uuid": "pro-759127a8714f",
+  "payload": "gpu",
+  "start_command": "sleep 1"
+}
+```
+
+### 返回Body示例
+
+```json
+{
+  "code": "Success",
+  "data": null,
+  "msg": "",
+  "request_id": "2a8504ac55fece996ace6deeb98e7fe5"
+}
+```
+
+## 关机应用实例
+
+`POST /api/v1/adl_dev/dev/instance/pro/power_off`
+
+### 请求参数
+
+| 参数 | 必填 | 说明 |
+| --- | --- | --- |
+| `instance_uuid` | 是 | 应用实例 ID。 |
+
+### 请求Body示例
+
+```json
+{
+  "instance_uuid": "pro-759127a8714f"
+}
+```
+
+### 返回Body示例
+
+```json
+{
+  "code": "Success",
+  "data": null,
+  "msg": "",
+  "request_id": "20114f6ef29ab403cc421489bb6e5539"
+}
+```
+
+## 释放应用实例
+
+`POST /api/v1/adl_dev/dev/instance/pro/release`
+
+释放实例前请先关机，否则可能无法释放。
+
+### 请求参数
+
+| 参数 | 必填 | 说明 |
+| --- | --- | --- |
+| `instance_uuid` | 是 | 应用实例 ID。 |
+
+### 请求Body示例
+
+```json
+{
+  "instance_uuid": "pro-759127a8714f"
+}
+```
+
+### 返回Body示例
+
+```json
+{
+  "code": "Success",
+  "data": null,
+  "msg": "",
+  "request_id": "20114f6ef29ab403cc421489bb6e5539"
+}
+```
+
+## GPU 算力规格 ID 对照表
+
+| 网页显示的 GPU 型号 | 网页显示的规格名称 | API 算力规格 ID |
+| --- | --- | --- |
+| H800-80G | 通用型 | `h800` |
+| 4090-48G | 通用型 | `v-48g` |
+| PRO6000-96G | 性能型 | `pro6000-p` |
+| 4080(S)-32G | 性能型 | `v-32g-p` |
+| 3090-48G | 通用型 | `v-48g-350w` |
+| 5090-32G | 性能型 | `5090-p` |

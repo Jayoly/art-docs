@@ -1,96 +1,53 @@
 ---
 title: "激励活动规则"
-description: "Configure Windsurf for your documentation workflow"
-icon: "water"
+description: "社区镜像与应用的参与条件、奖励比例和提现规则"
+icon: 'gift'
 ---
 
-Configure Windsurf's Cascade AI assistant to help you write and maintain documentation. This guide shows how to set up Windsurf specifically for your Mintlify documentation workflow.
+激励活动旨在鼓励原创优质内容，社区也会为符合条件的内容提供一定奖励和更多流量曝光。
 
-## Prerequisites
+<Note>
+奖励比例、参与状态和奖励金额可能调整或延迟更新，请以 AutoDL Art 社区页面显示为准。
+</Note>
 
-- Windsurf editor installed
-- Access to your documentation repository
+## 一、总则
 
-## Workspace rules
+参与活动的镜像和应用不得包含低俗、违法违规或侵权内容。社区会审核内容，并可对优质原创算法镜像提供奖励和流量曝光。
 
-Create workspace rules that provide Windsurf with context about your documentation project and standards.
+## 二、参与内容与资格
 
-Create `.windsurf/rules.md` in your project root:
+1. 镜像需审核通过并上架，方可参与镜像激励活动；请以社区页面显示的参与状态为准。
+2. 应用审核通过并上架后默认参与活动，无需额外提交申请。
+3. 镜像和应用均不得包含低俗、违法违规或侵权内容。
+4. 如发生版权纠纷，社区可下架相关镜像，并取消其活动资格和奖励。
+5. 镜像超过 6 个月未更新，社区将默认取消该镜像参与当前活动的资格。
+6. 禁止通过发布者自行消费自己的镜像等方式套取奖励。发现违规后，社区将取消活动资格，已获得的相关奖励不支持提现。
 
-````markdown
-# Mintlify technical writing rule
+## 三、奖励计算
 
-## Project context
+奖励金额按参与活动的镜像或应用在 AutoDL 上的运行时长和对应激励比例计算：
 
-- This is a documentation project on the Mintlify platform
-- We use MDX files with YAML frontmatter  
-- Navigation is configured in `docs.json`
-- We follow technical writing best practices
-
-## Writing standards
-
-- Use second person ("you") for instructions
-- Write in active voice and present tense
-- Start procedures with prerequisites
-- Include expected outcomes for major steps
-- Use descriptive, keyword-rich headings
-- Keep sentences concise but informative
-
-## Required page structure
-
-Every page must start with frontmatter:
-
-```yaml
----
-title: "Clear, specific title"
-description: "Concise description for SEO and navigation"
----
+```text
+奖励金额（元）= 运行时长（小时）× 激励比例（元/小时）
 ```
 
-## Mintlify components
+| 内容类型 | 基础激励比例 | 原创加成 |
+| --- | ---: | --- |
+| 镜像 | 0.05 元/小时 | 原创代码增加 0.01 元/小时；原创算法（paper）增加 0.02 元/小时，两项可累计 |
+| 应用 | 0.10 元/小时 | 无 |
 
-### Callouts
+镜像代码或算法是否原创，以社区审核结果为准。社区保留在活动期间调整奖励比例和计算规则的权利。
 
-- `<Note>` for helpful supplementary information
-- `<Warning>` for important cautions and breaking changes
-- `<Tip>` for best practices and expert advice  
-- `<Info>` for neutral contextual information
-- `<Check>` for success confirmations
+### 应用激励比例调整
 
-### Code examples
+自 2026 年 1 月 27 日起，应用激励比例由 0.06 元/小时提高至 0.10 元/小时。应用发布审核通过并上架后自动参与，无需再次申请。
 
-- When appropriate, include complete, runnable examples
-- Use `<CodeGroup>` for multiple language examples
-- Specify language tags on all code blocks
-- Include realistic data, not placeholders
-- Use `<RequestExample>` and `<ResponseExample>` for API docs
+## 四、奖励提现与到账
 
-### Procedures
+- 提现方式：支付宝。
+- 提现门槛：奖励金额满 100 元后可申请提现。
+- 奖励金额的更新时间可能延迟，请以社区页面显示的金额为准。
 
-- Use `<Steps>` component for sequential instructions
-- Include verification steps with `<Check>` components when relevant
-- Break complex procedures into smaller steps
+## 五、规则说明
 
-### Content organization
-
-- Use `<Tabs>` for platform-specific content
-- Use `<Accordion>` for progressive disclosure
-- Use `<Card>` and `<CardGroup>` for highlighting content
-- Wrap images in `<Frame>` components with descriptive alt text
-
-## API documentation requirements
-
-- Document all parameters with `<ParamField>` 
-- Show response structure with `<ResponseField>`
-- Include both success and error examples
-- Use `<Expandable>` for nested object properties
-- Always include authentication examples
-
-## Quality standards
-
-- Test all code examples before publishing
-- Use relative paths for internal links
-- Include alt text for all images
-- Ensure proper heading hierarchy (start with h2)
-- Check existing patterns for consistency
-````
+AutoDL Art 社区保留对本活动规则的解释权。活动资格、奖励金额及具体执行以社区页面和平台审核结果为准。

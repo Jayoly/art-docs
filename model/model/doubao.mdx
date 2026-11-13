@@ -1,31 +1,119 @@
 ---
 title: '火山即梦'
-description: '火山即梦调用示例'
-icon: 'comment-nodes'
+description: '火山即梦图像与视频生成 API 调用示例'
+icon: 'video'
 ---
 
-## 调用说明
+## 调用准备
 
 - `API_KEY`请前往「大模型」->「[令牌管理](https://www.autodl.art/large-model/tokens)」页面获取
 
 - `model`请前往「[大模型](https://www.autodl.art/large-model/market)」页面复制model名称
 
-- OpenAI 请求端点：https://www.autodl.art/api/v1/
+<Note>以下示例分别使用 `doubao-seedream-5-0-flash` 文生图和 `doubao-seedance-2-0-260128` 文生视频，请将示例中的 YOUR_API_KEY 替换为实际的 AutoDL 密钥</Note>
 
-  Anthropic请求端点：https://www.autodl.art/api/v1/anthropic
+## 文生图
 
-<Note>以下调用以xxxxx模型、xxx请求端点为例</Note> // todo替换xxxxx
+端点：https://www.autodl.art/api/v1/images/generations
 
-### curl调用 // todo
+详见[火山引擎官方文档](https://docs.volcengine.com/docs/ark/image-generation-api?lang=zh)
 
-```Shell
+### cURL 调用
 
-
+```bash
+curl --location 'https://www.autodl.art/api/v1/gemini/v1beta/models/gemini-3.1-pro-preview:generateContent' \
+  --header 'x-goog-api-key: YOUR_API_KEY' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "contents": [
+      {
+        "role": "user",
+        "parts": [
+          { "text": "您好！" }
+        ]
+      }
+    ]
+  }'
 ```
 
-### Python调用 // todo
+### Python 调用
 
-```Python
+```python
+import requests
 
+API_KEY = "YOUR_API_KEY"
+url = "https://www.autodl.art/api/v1/images/generations"
 
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {API_KEY}",
+}
+
+payload = {
+    "model": "doubao-seedream-5-0-flash",
+    "prompt": "一只橘猫坐在窗边，柔和的午后阳光，写实摄影风格",
+    "size": "1024x1024",
+    "output_format": "png",
+    "watermark": False,
+}
+
+resp = requests.post(url, headers=headers, json=payload, timeout=120)
+resp.raise_for_status()
+print(resp.json())
+```
+
+## 文生视频
+
+端点：https://www.autodl.art/api/v1/ark/v3/contents/generations/tasks
+
+详见[火山引擎官方文档](https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh)
+
+### cURL 调用
+
+```bash
+curl -X POST https://www.autodl.art/api/v1/ark/v3/contents/generations/tasks \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "doubao-seedance-2-0-260128",
+    "content": [
+        {
+            "type": "text",
+            "text": "一只橘猫坐在窗边，柔和的午后阳光，写实摄影风格"
+        }
+    ],
+    "ratio": "16:9",
+    "duration": 5,
+    "watermark": true
+}'
+```
+
+### Python 调用
+
+```python
+import requests
+
+url = "https://www.autodl.art/api/v1/ark/v3/contents/generations/tasks"
+
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_API_KEY",
+}
+
+payload = {
+    "model": "doubao-seedance-2-0-260128",
+    "content": [
+        {
+            "type": "text",
+            "text": "一只橘猫坐在窗边，柔和的午后阳光，写实摄影风格",
+        }
+    ],
+    "ratio": "16:9",
+    "duration": 5,
+    "watermark": True,
+}
+
+resp = requests.post(url, headers=headers, json=payload, timeout=60)
+resp.raise_for_status()
+print(resp.json())
 ```

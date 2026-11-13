@@ -1,80 +1,40 @@
 ---
-title: "常见问题"
-description: "欢迎使用AutoDL.art"
-icon: 'circle-question'
+title: "模型问题"
+description: "大模型 API 调用与模型返回问题排查"
+icon: 'brain'
 ---
 
-<Danger>严禁使用WebUI等算法生成违禁图片、严禁挖矿，一经发现立即封号！</Danger>
+## 模型名称或接口调用
 
-**AutoDL.art** 和 **AutoDL.com** 同属于视拓云研发和运营的产品，两者账户通用，可以互相登录使用。
-现在注册即送炼丹会员（有效期1个月），认证学生直接升级炼丹会员， 了解会员及认证🎉
+### 提示模型不存在或不可用
 
+请前往[模型广场](https://www.autodl.art/large-model/market)复制模型的完整名称，并检查请求中 `model` 字段的大小写、连字符和版本号。模型名称应与页面显示一致；如果模型需要指定接口协议，请使用该模型页面提供的对应端点。
 
-AutoDL.art 主要由 **AI 应用**和 **AI 镜像**两部分组成。
+### 提示 401 或认证失败
 
-**AI 镜像**本身就是docker镜像，是以 GitHub 为基础，在 GitHub 托管的代码下游，提供额外的镜像环境、算法模型等，解决以往构建环境难、管理与分享模型难的问题，为算法开发者、研究者等提供开箱即用的内容体验。详见[镜像]部分。//todo
+请检查以下内容：
 
-**AI 应用**是在镜像基础上，增加了开机自启动等功能。可实现 AIGC 应用的开机即用，让 AIGC 创作更简单、更高效。
+1. 使用的是 AutoDL「[令牌管理](https://www.autodl.art/large-model/tokens)」中创建的有效 Token。
+2. 请求发送给了正确的 API 地址，且没有把 API Key 与其他平台的密钥混用。
+3. API Key 前后没有多余空格或换行。使用兼容客户端时，通常只填写 Token 本身，不要手动添加 `Bearer ` 前缀。
+4. Token 未被删除、禁用或过期。
 
-## 功能亮点
+### 提示 404 或接口路径不存在
 
-· 即开即用：一键启动，开机即享预配置环境与服务。
+先确认客户端使用的接口协议与模型端点匹配。OpenAI 兼容接口的 Base URL 通常为 `https://www.autodl.art/api/v1`；Anthropic 兼容接口应使用对应的 Anthropic 地址。SDK 的 Base URL 与直接发送 HTTP 请求时的完整接口路径不同，不要将 `/chat/completions` 重复拼接到 SDK 的 Base URL。
 
-· 告别繁琐：无需关心启动流程、模型下载与环境配置。
+### 提示 400 或请求参数不支持
 
-· 热门应用首发：ComfyUI、Wan2.2 视频生成、AI-Toolkit、Index TTS 等热门 AIGC 应用现已上线。
+检查请求体格式、接口协议和模型支持的参数。不同模型支持的参数与能力可能不同；如果请求包含图像、音频、工具调用或特定采样参数，请确认所选模型及当前端点支持该能力，并先用一条简单的纯文本请求进行验证。
 
+### 提示 429 或请求被限流
 
-## 容器实例和应用实例的区别
+查看错误信息中给出的限制原因和重试提示。可以先降低并发或请求频率，等待后再重试；如果提示与额度或账户状态有关，请检查令牌设置和平台账单。不要在未确认原因时持续高频重试。
 
-## 必看文档
+### 流式调用没有显示完整内容
 
-Get your documentation site up and running in minutes.
+确认客户端按流式格式读取响应，而不是等待普通 JSON 返回。使用 SDK 时检查是否启用了 `stream`，并在循环中逐段读取内容；如果只想验证接口连通性，可以先关闭流式输出，发送一条简短请求。
 
-<Card title="Start here" icon="rocket" horizontal href="/quickstart">
-  Follow our three step quickstart guide.
-</Card>
+### 提示上下文长度超限
 
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card title="Edit locally" icon="pen-to-square" href="/development">
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card title="Customize your site" icon="palette" href="/essentials/settings">
-    Customize the design and colors of your site to match your brand.
-  </Card>
-  <Card title="Set up navigation" icon="map" href="/essentials/navigation">
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card title="API documentation" icon="terminal" href="/api-reference/introduction">
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card title="Write with MDX" icon="pen-fancy" href="/essentials/markdown">
-    Use MDX to style your docs pages.
-  </Card>
-  <Card title="Code samples" icon="code" href="/essentials/code">
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card title="Images" icon="image" href="/essentials/images">
-    Display images and other media.
-  </Card>
-  <Card title="Reusable snippets" icon="recycle" href="/essentials/reusable-snippets">
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card title="See complete examples" icon="stars" href="https://mintlify.com/customers">
-  Browse our showcase of exceptional documentation sites.
-</Card>
+缩短本次输入，并减少发送的历史对话、系统提示词或附加内容。多轮对话通常会重复携带上下文；请同时确认模型支持的上下文长度，并以模型页面显示的信息为准。

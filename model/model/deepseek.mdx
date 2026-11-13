@@ -14,13 +14,13 @@ icon: 'comment-nodes'
 
   Anthropic请求端点：https://www.autodl.art/api/v1/anthropic
 
-<Note>以下调用以模型DeepSeek-V4-Pro、OpenAI请求端点为例</Note>
+<Note>以下调用以模型`DeepSeek-V4-Pro`、OpenAI请求端点为例，请将示例中的 `YOUR_API_KEY` 替换为实际的 AutoDL 密钥</Note>
 
-### curl调用
+### cURL 调用
 
 ```Shell
 curl --location -g --request POST "https://www.autodl.art/api/v1/chat/completions" \
---header "Authorization: Bearer $API_KEY" \
+--header "Authorization: Bearer YOUR_API_KEY" \
 --header "Content-Type: application/json" \
 --data-raw '{
     "messages": [
@@ -34,10 +34,9 @@ curl --location -g --request POST "https://www.autodl.art/api/v1/chat/completion
 }'
 ```
 
-### Python调用
+### Python 调用
 
 ```Python
-# 如果没有安装OpenAI Python SDK，可使用命令安装：pip install OpenAI
 
 from openai import OpenAI
 
@@ -65,3 +64,6 @@ for chunk in stream:
         print(chunk.choices[0].delta.content)
 ```
 
+<Tip>
+如果本地尚未安装 OpenAI Python SDK，请先运行 `pip install openai`。
+</Tip>

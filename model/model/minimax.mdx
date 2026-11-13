@@ -1,6 +1,6 @@
 ---
 title: 'MiniMax'
-description: 'MiniMax调用示例'
+description: 'MiniMax 对话模型 API 调用示例'
 icon: 'comment-nodes'
 ---
 
@@ -14,18 +14,54 @@ icon: 'comment-nodes'
 
   Anthropic请求端点：https://www.autodl.art/api/v1/anthropic
 
-<Note>以下调用以xxxxx模型、xxx请求端点为例</Note> // todo替换xxxxx
+  OpenAI Responses：https://www.autodl.art/api/v1/responses
 
-### curl调用 // todo
-
-```Shell
+<Note>以下调用以模型`MiniMax-M3.1-Flash`、OpenAI请求端点为例，请将示例中的 `YOUR_API_KEY` 替换为实际的 AutoDL 密钥</Note>
 
 
+### cURL 调用
+
+```bash
+curl --location -g --request POST "https://www.autodl.art/api/v1/chat/completions" \
+--header "Authorization: Bearer YOUR_API_KEY" \
+--header "Content-Type: application/json" \
+--data-raw '{
+    "messages": [
+        {
+            "role": "user",
+            "content": "您好！"
+        }
+    ],
+    "model":"MiniMax-M3.1-Flash",
+    "stream":true
+}'
 ```
 
-### Python调用 // todo
+### Python 调用
 
-```Python
+```python
+from openai import OpenAI
 
+# 初始化客户端
+client = OpenAI(
+    base_url="https://www.autodl.art/api/v1",
+    api_key="YOUR_API_KEY",
+)
 
+# 调用接口（这里使用了stream=True进行流式响应）
+stream = client.chat.completions.create(
+    model="MiniMax-M3.1-Flash",
+    messages=[
+        {
+            "role": "user",
+            "content": "您好！"
+        }
+    ],
+    stream=True,
+)
+
+# 流式打印输出
+for chunk in stream:
+    if chunk.choices and chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content)
 ```

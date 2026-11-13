@@ -1,7 +1,7 @@
 ---
 title: '可灵'
-description: '可灵调用示例'
-icon: 'comment-nodes'
+description: '可灵文生视频与图生视频 API 调用示例'
+icon: 'video'
 ---
 
 ## 调用说明
@@ -10,22 +10,66 @@ icon: 'comment-nodes'
 
 - `model`请前往「[大模型](https://www.autodl.art/large-model/market)」页面复制model名称
 
-- OpenAI 请求端点：https://www.autodl.art/api/v1/
+<Note>以下调用以模型`kling-v2-5-turbo`、文生视频为例，请将示例中的 `YOUR_API_KEY` 替换为实际的 AutoDL 密钥</Note>
 
-  Anthropic请求端点：https://www.autodl.art/api/v1/anthropic
-
-<Note>以下调用以xxxxx模型、xxx请求端点为例</Note> // todo替换xxxxx
-
-### curl调用 // todo
-
-```Shell
+详见[可灵官方文档](https://klingai.com/document-api/api/video/2-5-turbo/text-to-video)
 
 
+### cURL 调用
+
+文生视频端点：https://www.autodl.art/api/v1/kling/v1/videos/text2video
+
+```bash
+curl --location 'https://www.autodl.art/api/v1/kling/v1/videos/text2video' \
+--header "Authorization: Bearer ${YOUR_API_KEY}" \
+--header 'Content-Type: application/json' \
+--data '{
+  "prompt": "一只橘猫坐在窗边，柔和的午后阳光，写实摄影风格",
+  "settings": {
+    "resolution": "1080p",
+    "aspect_ratio": "9:16",
+    "duration": 5
+  },
+  "options": {
+    "callback_url": "https://xxx/callback",
+    "external_task_id": "",
+    "watermark_info": {
+      "enabled": true
+    }
+  }
+}'
 ```
 
-### Python调用 // todo
+### Python 调用
 
-```Python
+```python
+import requests
 
+url = "https://www.autodl.art/api/v1/kling/v1/videos/text2video"
 
+headers = {
+    "Authorization": f"Bearer {YOUR_API_KEY}",
+    "Content-Type": "application/json",
+}
+
+payload = {
+    "prompt": "一只橘猫坐在窗边，柔和的午后阳光，写实摄影风格",
+    "settings": {
+        "resolution": "1080p",
+        "aspect_ratio": "9:16",
+        "duration": 5,
+    },
+    "options": {
+        "callback_url": "https://xxx/callback",
+        "external_task_id": "",
+        "watermark_info": {
+            "enabled": True,
+        },
+    },
+}
+
+response = requests.post(url, headers=headers, json=payload, timeout=60)
+
+print("Status:", response.status_code)
+print("Response:", response.text)
 ```

@@ -16,13 +16,15 @@ icon: 'download'
 
 # scp命令
 
-> ⚠️下方指令需要在您**本地**的机器上执行，而不是在实例中执行该命令;
-> 
-> 如果您是Windows用户，默认Windows系统未安装SSH客户端，推荐下载使用[Cmder](http://autodl-public.ks3-cn-beijing.ksyun.com/tool/cmder_mini.zip)工具，免安装解压即用。
+<Warning>
+⚠️下方指令需要在您**本地**的机器上执行，而不是在实例中执行该命令;
+ 
+如果您是Windows用户，默认Windows系统未安装SSH客户端，推荐下载使用[Cmder](http://autodl-public.ks3-cn-beijing.ksyun.com/tool/cmder_mini.zip)工具，免安装解压即用。
+</Warning>
 
 复制您的ssh登录指令，指令格式为：`ssh -p 26095 root@connect.westd.seetacloud.com`   （注意26095为端口号，connect.westd.seetacloud.com为远程地址，请更换为您的实例端口和地址）
 
-> ⚠️下面命令中参数是**`-rP`**，不是`-rp`
+<Warning>⚠️下面命令中参数是**`-rP`**，不是`-rp`</Warning>
 
 那么scp远程下载文件的指令为：`scp -rP 26095 root@connect.westd.seetacloud.com:<实例中的文件/文件夹>  <本地文件/文件夹> `  （注意需要在您**本地**的机器上执行）
 

@@ -8,11 +8,11 @@ icon: 'rocket'
 
 ### Step 1: 创建令牌
 
-在「大模型」-> 「令牌管理」里创建一个令牌。
+在「大模型」-> 「令牌管理」里创建一个令牌。分组选择**特惠**
 
 <Tip>建议设置消费额度和过期时间。</Tip>
 
-![image_2026-07-31_154850_150](/images/start/image_2026-07-31_154850_150.png)
+![image_2026-07-31_154850_150](/images/large-model/start/image_2026-07-31_154850_150.png)
 
 ### Step 2: 选择模型
 
@@ -20,7 +20,7 @@ icon: 'rocket'
 
 <Tip>注意这里使用`DeepSeek-V4-Pro`的`OpenAI`端点进行演示。</Tip>
 
-![image_2026-07-31_154850_152](/images/start/image_2026-07-31_154850_152.png)
+![image_2026-07-31_154850_152](/images/large-model/start/image_2026-07-31_154850_152.png)
 
 ### Step 3: 开始调用 
 
@@ -55,5 +55,5 @@ for chunk in stream:
         print(chunk.choices[0].delta.content)
 ```
 
-![image_2026-07-31_161922_259](/images/start/image_2026-07-31_161922_259.png)
+![image_2026-07-31_161922_259](/images/large-model/start/image_2026-07-31_161922_259.png)
 
