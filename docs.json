@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "CG文档中心",
+  "name": "AutoDL.art文档中心",
   "colors": {
     "primary": "#3760F4",
     "light": "#6b8bfc",
