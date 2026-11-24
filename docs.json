@@ -10,7 +10,7 @@
   "icons":{
     "library": "fontawesome"
   },
-  "favicon": "/favicon.png",
+  "favicon": "/images/favicon.png",
   "navigation": {
     "tabs": [
       {
@@ -38,6 +38,12 @@
               "guide/account/realname",
               "guide/account/member",
               "guide/account/student"
+            ]
+          },
+          {
+            "group": "服务协议",
+            "pages": [
+              "guide/agreements/agreements"
             ]
           }
         ]
@@ -85,6 +91,13 @@
             ]
           },
           {
+            "group": "最佳实践",
+            "pages": [
+              "app/best_practices/xshell",
+              "app/best_practices/daemon"
+            ]
+          },
+          {
             "group": "计费",
             "pages": [
               "app/expense/price"
@@ -93,9 +106,10 @@
           {
             "group": "常见问题",
             "pages": [
-              "app/qa/qa1",
-              "app/qa/qa2",
-              "app/qa/qa3"
+              "app/faq/qa1",
+              "app/faq/qa2",
+              "app/faq/qa3",
+              "app/faq/qa4"
             ]
           },
           {
@@ -163,10 +177,10 @@
           {
             "group": "常见问题",
             "pages": [
-              "model/qa/qa1",
-              "model/qa/qa2",
-              "model/qa/qa3",
-              "model/qa/qa4"
+              "model/faq/qa1",
+              "model/faq/qa2",
+              "model/faq/qa3",
+              "model/faq/qa4"
             ]
           }
         ]
@@ -197,7 +211,7 @@
           {
             "group": "常见问题",
             "pages": [
-              "comfyui/qa/qa1"
+              "comfyui/faq/qa1"
             ]
           }
         ]
@@ -221,7 +235,7 @@
           {
             "group": "常见问题",
             "pages": [
-              "image/qa/qa1"
+              "image/faq/qa1"
             ]
           }
         ]
@@ -233,24 +247,22 @@
           "author/app",
           "author/reward"
         ]
-      },
-      {
-        "tab": "服务协议",
-        "pages": [
-          "agreements/agreements"
-        ]
       }
     ]
   },
   "logo": {
-    "light": "/logo/art.png",
-    "dark": "/logo/art.png"
+    "light": "/images/logo/art.png",
+    "dark": "/images/logo/art.png"
   },
   "navbar": {
     "links": [
       {
         "label": "联系客服",
         "href": "https://work.weixin.qq.com/kfid/kfc93f07e4d810f619d"
+      },
+      {
+        "label": "旧版文档",
+        "href": "https://www.autodl.art/docs/"
       }
     ],
     "primary": {
