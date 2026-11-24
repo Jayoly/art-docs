@@ -13,9 +13,9 @@ ComfyUI API页面的不同工作流的接入流程和整体API参数基本一致
 ## 调用准备
 
 1. 在 [令牌管理](https://www.autodl.art/large-model/tokens) 中创建令牌，分组选择 **ComfyUI**。
-![2026-08-14-10-31-03-image](/images/comfyui/quickstart/2026-08-14-10-31-03-image.png)
+![2026-08-14-10-31-03-image](/images/comfyui/api/api/2026-08-14-10-31-03-image.png)
 2. 在 ComfyUI API 页面选择需要调用的工作流，记录工作流 ID。
-![2026-08-14-10-28-40-image](/images/comfyui/api/2026-08-14-10-28-40-image.png)
+![2026-08-14-10-28-40-image](/images/comfyui/api/api/2026-08-14-10-28-40-image.png)
 3. 查看该工作流对应的请求参数。不要直接将其他工作流的示例参数用于当前工作流。
 
 令牌通过 Headers 请求头传入：
@@ -50,9 +50,9 @@ curl -X POST \
 上面的字段仅用于示意，实际参数以所选工作流弹窗展示的 API 请求参数为准。
 下图展示了工作流详情中的 API 参数说明。图片仅作界面示例，具体字段以你选择的工作流当前页面为准。
 
-![2026-08-14-10-32-26-image](/images/comfyui/api/2026-08-14-10-32-26-image.png)
+![2026-08-14-10-32-26-image](/images/comfyui/api/api/2026-08-14-10-32-26-image.png)
 
-![2026-08-14-10-32-37-image](/images/comfyui/api/2026-08-14-10-32-37-image.png)
+![2026-08-14-10-32-37-image](/images/comfyui/api/api/2026-08-14-10-32-37-image.png)
 
 成功提交后，响应中的 `data.task_id` 用于查询任务：
 

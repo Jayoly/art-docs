@@ -3,7 +3,6 @@ title: 'Codex'
 description: 'Codex 配置 AutoDL 大模型接口'
 icon: 'toolbox'
 ---
-// todo检查是否需要终端交互配置
 
 Codex 是 OpenAI 提供的命令行编程助手。通过配置 AutoDL 的第三方 Token，你可以在本地终端直接使用 Codex。
 
@@ -26,81 +25,41 @@ npm install -g @openai/codex
 
 推荐使用 [CC Switch](/model/tool/ccswitch) 统一管理 Codex、Claude Code 等工具的环境变量。
 
-## Windows 配置
+## 配置 Codex
 
-### 临时配置
+### 环境准备 (配置 API 代理地址)
 
-在 PowerShell 中执行以下命令，本次终端会话立即生效：
+请在启动 Codex 之前，先在终端执行以下命令来覆盖默认的 API 地址：
 
-```PowerShell
-$env:OPENAI_BASE_URL="https://www.autodl.art/api/v1"
-$env:OPENAI_API_KEY="<你的API_KEY>"
+```Shell
+# 设置自定义 API 基础路径
+export OPENAI_BASE_URL="https://www.autodl.art/api/v1"
 ```
+<Tip>
+建议将此命令添加到你的 shell 配置文件（如 ~/.bashrc 或 ~/.zshrc ）中，以便持久生效。
+</Tip>
 
-### 永久配置
+### 启动 Codex
 
-如果希望后续打开 PowerShell 时自动生效，可以执行：
+在终端中输入以下命令启动程序：
 
-```PowerShell
-setx OPENAI_BASE_URL "https://www.autodl.art/api/v1"
-setx OPENAI_API_KEY "<你的API_KEY>"
-```
-
-执行完成后，关闭当前终端并重新打开，再运行：
-
-```PowerShell
+```Shell
 codex
 ```
 
-<Tip>
-Windows 用户也可以在 WSL 或 Git Bash 中按照 Linux 的方式配置。
-</Tip>
+### 身份验证与 API Key 输入
 
-## Linux 配置
+启动后，你将看到登录选项界面。请按照以下步骤操作：
 
-### 临时配置
+1. 选择登录方式：使用键盘方向键或数字键选择 **3. Provide your own API key** 。
 
-在终端中执行以下命令，本次终端会话立即生效：
+![](/images/model/tool/codex/2026-03-19-15-00-32-img_v3_02vu_25381dea-65fc-4a35-89dc-9968cba53b9g.png)
 
-```Shell
-export OPENAI_BASE_URL="https://www.autodl.art/api/v1"
-export OPENAI_API_KEY="<你的API_KEY>"
-```
+2. 输入 Key：在弹出的输入框中粘贴或输入你的API Key。
 
-### 永久配置
+![](/images/model/tool/codex/2026-03-19-15-01-23-img_v3_02vu_fe19d293-a986-4415-8019-4cd44da247ag.png)
 
-如果使用 Bash，可以写入 `~/.bashrc`：
-
-```Shell
-echo 'export OPENAI_BASE_URL="https://www.autodl.art/api/v1"' >> ~/.bashrc
-echo 'export OPENAI_API_KEY="<你的API_KEY>"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-如果使用 Zsh，将 `~/.bashrc` 替换为 `~/.zshrc`。
-
-## macOS 配置
-
-### 临时配置
-
-在终端中执行以下命令，本次终端会话立即生效：
-
-```Shell
-export OPENAI_BASE_URL="https://www.autodl.art/api/v1"
-export OPENAI_API_KEY="<你的API_KEY>"
-```
-
-### 永久配置
-
-macOS 默认使用 Zsh，可以写入 `~/.zshrc`：
-
-```Shell
-echo 'export OPENAI_BASE_URL="https://www.autodl.art/api/v1"' >> ~/.zshrc
-echo 'export OPENAI_API_KEY="<你的API_KEY>"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-如果你使用 Bash，将 `~/.zshrc` 替换为 `~/.bash_profile` 或 `~/.bashrc`。
+输入完成后按下 Enter 键保存。
 
 ## 启动 Codex
 
